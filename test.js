@@ -1,127 +1,60 @@
-console.log("Hello world");
-   // TODO: Fix this later
+function calculatePrice(item) {
+  console.log("Calculating price for:", item);
+  console.error("Debug mode enabled");
+  
+  let price = item.basePrice;
+  
+  // TODO: Add tax calculation
+  // FIXME: Handle discount codes properly
+  
+  if (item.discount) {
+    price = price - item.discount;
+    console.log("Price after discount:", price);
+  }
+  
+  return price;
+}
+
+module.exports = calculatePrice;
 ```
-   - Scroll down → Select **Create a new branch** → `test-pr`
-   - Click **Propose new file**
-   - Click **Create pull request**
-   - Click **Create pull request** again
 
-2. **Check n8n:**
-   - Go back to your n8n tab
-   - You should see **"Test Event Received"** ✅
-   - Click **Stop Listening**
-   - You'll see the webhook data appear
-
-**If it doesn't work:**
-- Go to GitHub repo → Settings → Webhooks
-- Click your webhook → Scroll to "Recent Deliveries"
-- Check if request was sent and response received
+5. **Scroll down to bottom** - you'll see "Commit new file" section
 
 ---
 
-### Step 2.5: Add Filter Node (Process Only Relevant PRs)
+### Step 3: CREATE A BRANCH (This is the key!)
 
-**What this does:** Only trigger on PR open/update events, ignore other GitHub events
+**Look at the two radio buttons:**
+```
+⚪ Commit directly to the main branch
+⚫ Create a new branch for this commit and start a pull request
+```
 
-1. **Click the "+" on the Webhook node** → Search `IF`
-2. Click **IF** node
-3. **Configure:**
-   - **Conditions:**
-     - Click **Add Condition** → **String**
-     - **Value 1:** Click field → **Expressions** tab → Type:
-```
-       {{ $json.action }}
-```
-     - **Operation:** `Equal to`
-     - **Value 2:** Type: `opened`
-   
-4. **Add second condition (OR logic):**
-   - Click **Add Condition** → **String**
-   - **Value 1:** 
-```
-     {{ $json.action }}
-```
-   - **Operation:** `Equal to`
-   - **Value 2:** `synchronize`
-   
-5. **Mode:** Change to `ANY condition is true` (dropdown at top)
+**CRITICAL:** Click the **SECOND option** (Create a new branch...)
 
-6. Click **Execute Node** to test
-   - Should go through "true" path
+6. It will auto-fill a branch name like: `Soham-008-patch-1`
+   - **Just leave it as is!**
+
+7. Click **"Propose new file"** (green button at bottom)
 
 ---
 
-### Step 2.6: Extract PR Information
+### Step 4: Create the Pull Request
 
-**What this does:** Gets the PR details we need for the next steps
+8. **New page appears** with title "Open a pull request"
 
-1. **From IF node "true" output** → Click "+" → Search `Set`
-2. Click **Set** node
-3. **Configure:**
-   - Click **Add Value** → **String**
-     - **Name:** `pr_number`
-     - **Value:** 
-```
-       {{ $json.pull_request.number }}
-```
-   
-   - Click **Add Value** → **String**
-     - **Name:** `repo_owner`
-     - **Value:** 
-```
-       {{ $json.repository.owner.login }}
-```
-   
-   - Click **Add Value** → **String**
-     - **Name:** `repo_name`
-     - **Value:** 
-```
-       {{ $json.repository.name }}
-```
-   
-   - Click **Add Value** → **String**
-     - **Name:** `pr_files_url`
-     - **Value:** 
-```
-       {{ $json.pull_request.url }}/files
-```
-   
-   - Click **Add Value** → **String**
-     - **Name:** `pr_comments_url`
-     - **Value:** 
-```
-       {{ $json.pull_request.comments_url }}
-```
+9. You'll see:
+   - Title: "Create app.js" (auto-filled)
+   - Big text box for description
 
-4. **Rename this node:** Click the three dots → **Rename** → `Extract PR Info`
+10. Click the green button: **"Create pull request"**
 
 ---
 
-### Step 2.7: Add GitHub Credentials
+### Step 5: Check n8n IMMEDIATELY!
 
-**Before we can call GitHub API, we need to add your token:**
+**Switch to n8n tab RIGHT NOW!**
 
-1. **Click on n8n logo** (top left) → **Settings** → **Credentials**
-2. Click **+ Add Credential**
-3. Search for `GitHub`
-4. Click **GitHub API** (not GitHub Trigger)
-
-**Configure:**
-5. **Credential Name:** `GitHub Bot Token`
-6. **Authentication:** `Access Token`
-7. **Access Token:** Paste your token from Step 1.2 (starts with `ghp_...`)
-8. Click **Save**
-
----
-
-### Step 2.8: Fetch PR Files
-
-**What this does:** Gets list of all files changed in the PR
-
-1. **From "Extract PR Info" node** → Click "+" → Search `HTTP Request`
-2. Click **HTTP Request** node
-3. **Configure:**
-   - **Method:** `GET`
-   - **URL:** 
+**You SHOULD see:**
 ```
-     {{ $json.pr_files_url }}
+✅ Test event received
