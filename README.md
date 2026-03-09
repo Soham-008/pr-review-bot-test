@@ -132,103 +132,6 @@ GitHub PR Updated with Bot Comment
 - ✅ Tracks all TODO comments
 - ✅ Human reviewers focus on architecture
 
-## 🚀 Setup Instructions
-
-### Prerequisites
-
-- GitHub account
-- n8n account ([Sign up free](https://n8n.io))
-- GitHub repository with admin access
-
-### Step 1: Create GitHub Personal Access Token
-
-1. Go to: **GitHub → Settings → Developer settings → Personal access tokens**
-2. Click: **"Generate new token (classic)"**
-3. Settings:
-   - **Note:** `n8n PR Review Bot`
-   - **Expiration:** `90 days`
-   - **Scopes:** ✅ `repo` (Full control)
-4. Click: **"Generate token"**
-5. **Copy token** (starts with `ghp_...`)
-
-### Step 2: Set Up n8n Workflow
-
-1. **Create new workflow** in n8n
-2. **Import workflow** (if JSON provided) or build manually
-3. **Add GitHub credentials:**
-   - Click "Get PR Files" node
-   - Authentication: `Predefined Credential Type` → `GitHub API`
-   - Create new credential with your token
-4. **Apply same credential** to "Post Comment to PR" node
-
-### Step 3: Activate Workflow
-
-1. Click **"Publish"** (top right)
-2. **Copy Webhook URL** from Webhook node
-   - Example: `https://yourname.app.n8n.cloud/webhook-test/github-pr-review`
-
-### Step 4: Configure GitHub Webhook
-
-1. Go to: **Your Repo → Settings → Webhooks → Add webhook**
-2. Configure:
-   - **Payload URL:** [Paste n8n webhook URL]
-   - **Content type:** `application/json`
-   - **Events:** "Let me select individual events"
-     - ✅ Pull requests
-     - ☐ Pushes (uncheck)
-   - ✅ Active
-3. Click: **"Add webhook"**
-
-### Step 5: Test It!
-
-1. Create new file with code:
-```javascript
-console.log("Testing bot");
-// TODO: Test this feature
-```
-2. Commit to **new branch** (not main)
-3. **Create pull request**
-4. Wait 5 seconds
-5. **See bot comment!** 🎉
-
-## 💡 Customization
-
-### Adjust File Size Threshold
-
-In "Check File Sizes" node:
-```javascript
-if (changes > 300) {  // Change to 500, 1000, etc.
-  largeFiles.push({...});
-}
-```
-
-### Add Custom Patterns
-
-In "Check Console Logs" node:
-```javascript
-// Add debugger detection
-const debuggerRegex = /debugger;/g;
-const matches = addedContent.match(debuggerRegex);
-```
-
-### Modify Comment Style
-
-In "Generate Comment" node:
-```javascript
-comment += '### ⚠️ Custom Warning Message\n';
-```
-
-## 🔮 Future Enhancements
-
-Planned features:
-- [ ] Code formatting checks (Prettier, ESLint)
-- [ ] Security scanning for hardcoded secrets
-- [ ] Test coverage analysis
-- [ ] Auto-labeling PRs (bug/feature/docs)
-- [ ] Slack/Discord notifications
-- [ ] Performance metrics dashboard
-- [ ] Language-specific rules
-- [ ] CI/CD pipeline integration
 
 ## 📸 Example Bot Comments
 
@@ -293,10 +196,6 @@ Building this project taught me:
 **Problem:** Sequential checks were too slow (10+ seconds)
 **Solution:** Implemented parallel execution achieving 3.7s total time
 
-## 📄 License
-
-MIT License - Feel free to use and modify!
-
 ## 👤 Author
 
 **Soham Kulkarni**
@@ -308,17 +207,7 @@ MIT License - Feel free to use and modify!
 
 - Built with [n8n](https://n8n.io) - Open-source workflow automation
 - Powered by [GitHub API](https://docs.github.com/en/rest)
-- Inspired by the need for faster, smarter code reviews
-
----
-
-⭐ **Star this repo if you find it helpful!**
-
-📧 **Questions?** Open an issue or reach out!
-
-🤝 **Contributions welcome!** Feel free to fork and improve!
-
----
+- Inspired by Claude AI and n8n 
 
 *Built with ❤️ using n8n workflow automation*
 
